@@ -3,19 +3,21 @@ package com.join_cafeteria;
 public class Camarero {
 
     private String nombre;
+    private HelloController controlador;
 
-    public Camarero(String nombre) {
+    public Camarero(String nombre, HelloController controlador) {
         this.nombre = nombre;
+        this.controlador = controlador;
     }
 
     public void prepararCafe(Cliente cliente) {
-        System.out.println(nombre + " está preparando el café de " + cliente.getNombre() + "...");
+        controlador.mostrarMensaje(nombre + " está preparando el café de " + cliente.getNombre() + "...");
         try {
             Thread.sleep(2000);
-            System.out.println(nombre + " ha terminado el cafe de " + cliente.getNombre() + ".");
+            controlador.mostrarMensaje(nombre + " ha terminado el café de " + cliente.getNombre() + ".");
             cliente.interrupt();
         } catch (InterruptedException e) {
-            System.out.println(nombre + " fue interrumpido mientras preparaba el café.");
+            controlador.mostrarMensaje(nombre + " fue interrumpido mientras preparaba el café.");
         }
     }
 }

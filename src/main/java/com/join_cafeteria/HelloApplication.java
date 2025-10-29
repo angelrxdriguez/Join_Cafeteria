@@ -5,9 +5,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+public class HelloApplication extends Application {
+    @Override
+    public void start(Stage stage) throws Exception {
+        FXMLLoader fxmlLoader = new FXMLLoader(
+                HelloApplication.class.getResource("hello-view.fxml")
+        );
+        Scene scene = new Scene(fxmlLoader.load(), 900, 452); // mismo tamaño que tu FXML
+        stage.setTitle("a");
+        stage.setScene(scene);
+        stage.show();
+    }
 
-public class HelloApplication {
     public static void main(String[] args) {
-        HelloController.main(args);
+        launch(args);
     }
 }

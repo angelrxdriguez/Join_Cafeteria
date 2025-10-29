@@ -1,13 +1,16 @@
 package com.join_cafeteria;
 
+
 public class Cliente extends Thread {
 
     private String nombre;
     private int tiempoEspera;
+    private HelloController controlador;
 
-    public Cliente(String nombre, int tiempoEspera) {
+    public Cliente(String nombre, int tiempoEspera, HelloController controlador) {
         this.nombre = nombre;
         this.tiempoEspera = tiempoEspera;
+        this.controlador = controlador;
     }
 
     public String getNombre() {
@@ -16,12 +19,12 @@ public class Cliente extends Thread {
 
     @Override
     public void run() {
-        System.out.println(nombre + " ha llegado a la cafetería y pide un café.");
+        controlador.mostrarMensaje(nombre + " ha llegado a la cafetería y pide un café.");
         try {
             Thread.sleep(tiempoEspera);
-            System.out.println(nombre + " se ha cansado de esperar y se ha pirado");
+            controlador.mostrarMensaje(nombre + " se ha cansado de esperar y se ha pirado😢");
         } catch (InterruptedException e) {
-            System.out.println(nombre + " ha recibido su cafe");
+            controlador.mostrarMensaje(nombre + " ha recibido su cafe 😄");
         }
     }
 }
