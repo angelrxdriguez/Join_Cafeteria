@@ -8,8 +8,8 @@ public class Camarero {
     public Camarero(String nombre, HelloController controlador) {
         this.nombre = nombre;
         this.controlador = controlador;
+        controlador.mostrarMensaje("Ha empezado"+this.nombre);
     }
-
     public void prepararCafe(Cliente cliente) {
         controlador.mostrarMensaje(nombre + " está preparando el café de " + cliente.getNombre() + "...");
         try {

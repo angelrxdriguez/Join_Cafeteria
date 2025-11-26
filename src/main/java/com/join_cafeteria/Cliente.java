@@ -1,8 +1,7 @@
 package com.join_cafeteria;
 
-
 public class Cliente extends Thread {
-
+    public boolean atendido;
     private String nombre;
     private int tiempoEspera;
     private HelloController controlador;
@@ -11,20 +10,33 @@ public class Cliente extends Thread {
         this.nombre = nombre;
         this.tiempoEspera = tiempoEspera;
         this.controlador = controlador;
+        this.atendido  = false;
     }
 
     public String getNombre() {
         return nombre;
     }
-
+    public boolean getAtendido(){
+        return atendido;
+    }
     @Override
     public void run() {
-        controlador.mostrarMensaje(nombre + " ha llegado a la cafetería y pide un café.");
+        controlador.mostrarMensaje(nombre + " ha llegado y pide un cafe");
+
         try {
             Thread.sleep(tiempoEspera);
-            controlador.mostrarMensaje(nombre + " se ha cansado de esperar y se ha pirado😢");
+            if (controlador.cerrado) {
+                controlador.mostrarMensaje(nombre + " se va porque la cafetería está cerrada.");
+            } else {
+                controlador.mostrarMensaje(nombre + " se ha cansado de esperar y se PIRA");
+            }
         } catch (InterruptedException e) {
-            controlador.mostrarMensaje(nombre + " ha recibido su cafe 😄");
+            if (controlador.cerrado) {
+                controlador.mostrarMensaje(nombre + " se va porque la cafetería ha CERRADO");
+            } else {
+                controlador.mostrarMensaje(nombre + " ha recibido su cafe");
+                controlador.totalServido++;
+            }
         }
     }
 }

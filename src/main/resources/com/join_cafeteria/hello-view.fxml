@@ -16,9 +16,11 @@
          <Font name="Arial Black" size="36.0" />
       </font>
    </Text>
-
+    <Button onAction="#btnCerrar" style="-fx-background-color: red;" text="Cerrar" textFill="WHITE"/>
+    <Button onAction="#btnCamarero" style="-fx-background-color: green;" text="Añadir" textFill="WHITE"/>
     <TextArea fx:id="logs" editable="false" prefHeight="178.0" prefWidth="347.0" wrapText="true" />
-    <Button onAction="#onHelloButtonClick" style="-fx-background-color: BLUE;" text="INICIAR" textFill="WHITE">
+    <Button onAction="#onHelloButtonClick" style="-fx-background-color: BLUE;" text="INICIAR" textFill="WHITE"/>
+    <Button onAction="#hola" style="-fx-background-color: BLUE;" text="Resumen" textFill="WHITE">
       <font>
          <Font name="Arial Black" size="14.0" />
       </font></Button>
