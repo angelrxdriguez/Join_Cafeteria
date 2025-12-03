@@ -9,14 +9,17 @@ public class HelloController {
 
     @FXML
     private TextArea logs;
+
     public int contadorCamarero;
     public int totalServido;
     public int totalPedido;
     public boolean cerrado;
 
     private Camarero camarero;
+    private Barista barista;
     private Cliente c1;
     private Cliente c2;
+    private Buffer buffer; // NUEVO
 
     public void mostrarMensaje(String texto) {
         Platform.runLater(() -> logs.appendText(texto + "\n"));
@@ -30,29 +33,23 @@ public class HelloController {
         cerrado = false;
         totalServido = 0;
         totalPedido = 2;
-        contadorCamarero=0;
-        /*camarero = new Camarero("Pedro", this);*/
+        contadorCamarero = 0;
+
+        buffer = new Buffer();
+
+        barista = new Barista("BARISTA PRINCIPAL", this, buffer);
+
         c1 = new Cliente("Ana", 5000, this);
         c2 = new Cliente("Luis", 7000, this);
         c1.start();
         c2.start();
-/*
-        new Thread(() -> {
-            try {
-                Thread.sleep(1000);
-                camarero.prepararCafe(c1);
-                Thread.sleep(1000);
-                camarero.prepararCafe(c2);
-                mostrarMensaje("CAMARERO HA TERMINADO).");
-            } catch (InterruptedException e) {
-                mostrarMensaje("Hilo del camarero interrumpido.");
-            }
-        }).start(); */
     }
+
     @FXML
     public void hola(ActionEvent actionEvent) {
         mostrarMensaje("Resumen: " + totalServido + "/" + totalPedido);
     }
+
     @FXML
     public void btnCerrar(ActionEvent actionEvent) {
         if (cerrado) {
@@ -61,24 +58,37 @@ public class HelloController {
         }
         cerrado = true;
         mostrarMensaje("CERRADO, NO SE ATIENDEN MAS CLIENTES");
-        if (c1.isAlive()) {
+
+        if (c1 != null && c1.isAlive()) {
             c1.interrupt();
         }
-        if (c2.isAlive()) {
+        if (c2 != null && c2.isAlive()) {
             c2.interrupt();
         }
     }
 
     public void btnCamarero(ActionEvent actionEvent) {
-        contadorCamarero ++;
-        camarero = new Camarero("CAMARERO"+ " "+contadorCamarero, this);
+        if (barista == null || buffer == null) {
+            mostrarMensaje("Primero debes pulsar INICIAR para crear al barista y el buffer.");
+            return;
+        }
+
+        contadorCamarero++;
+        camarero = new Camarero("CAMARERO " + contadorCamarero, this, buffer);
+
         new Thread(() -> {
             try {
                 Thread.sleep(1000);
-                camarero.prepararCafe(c1);
+                if (c1 != null && c1.isAlive()) {
+                    camarero.atenderCliente(barista, c1);
+                }
+
                 Thread.sleep(1000);
-                camarero.prepararCafe(c2);
-                mostrarMensaje("CAMARERO HA TERMINADO).");
+                if (c2 != null && c2.isAlive()) {
+                    camarero.atenderCliente(barista, c2);
+                }
+
+                mostrarMensaje("CAMARERO HA TERMINADO.");
             } catch (InterruptedException e) {
                 mostrarMensaje("Hilo del camarero interrumpido.");
             }
